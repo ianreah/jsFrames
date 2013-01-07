@@ -1,0 +1,15 @@
+﻿html, body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    background: black;
+}
+
+#fps {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 13px;
+    color: white;
+    position: absolute;
+    right: 3px;
+}
