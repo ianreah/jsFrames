@@ -1,0 +1,1 @@
+java -jar compiler.jar --js jsFrames.js --js_output_file jsFrames.min.js
