@@ -28,7 +28,7 @@
 }());
 
 // jsFrames main module
-window.jsFrames = (function (rx, jsF) {
+window['jsFrames'] = (function (rx, jsF) {
 	var animations = [];
 	
 	var filterStrength = 20;
@@ -51,18 +51,18 @@ window.jsFrames = (function (rx, jsF) {
 		lastFrameTimestamp = timeStamp;
 	}
 
-	jsF.registerAnimation = function(animation) {
+	jsF['registerAnimation'] = function(animation) {
 		animations.push(animation);
 	};
 
-	jsF.start = function () {
+	jsF['start'] = function () {
 		lastFrameTimestamp = Date.now();
 		
 		animate(lastFrameTimestamp);
 		return lastFrameTimestamp;
 	};
 	
-	jsF.onFpsUpdate = function (action) {
+	jsF['onFpsUpdate'] = function (action) {
 	    fpsStream.subscribe(action);
 	};
 
