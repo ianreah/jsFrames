@@ -23,7 +23,7 @@
 	});
 
 	var theFpsDisplay = $('#fps');
-	jsFrames.fpsStream.subscribe(function (fps) {
+	jsFrames.onFpsUpdate(function (fps) {
 		theFpsDisplay.html("FPS: " + fps);
 	});
 	

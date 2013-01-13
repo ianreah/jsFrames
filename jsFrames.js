@@ -34,6 +34,10 @@ window.jsFrames = (function (rx, jsF) {
 	var filterStrength = 20;
 	var frameTime = 0, lastFrameTimestamp = 0;
 
+	var fpsStream = rx.Observable.interval(1000).select(function () {
+	    return (1000 / frameTime).toFixed();
+	}).distinctUntilChanged();
+
 	function animate(timeStamp) {
 		requestAnimationFrame(animate);
 		
@@ -58,9 +62,9 @@ window.jsFrames = (function (rx, jsF) {
 		return lastFrameTimestamp;
 	};
 	
-	jsF.fpsStream = rx.Observable.interval(1000).select(function () {
-	    return (1000 / frameTime).toFixed();
-	}).distinctUntilChanged();
+	jsF.onFpsUpdate = function (action) {
+	    fpsStream.subscribe(action);
+	};
 
 	return jsF;
 }(window.Rx, window.jsFrames || {}));
