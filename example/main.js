@@ -9,16 +9,6 @@
     var theCanvas = $('#theCanvas')[0];
     var drawingContext = theCanvas.getContext("2d");
 
-    resize();
-    $(window).resizeAsObservable()
-			 .throttle(250)
-			 .subscribe(resize);
-
-    function resize() {
-        theCanvas.width = $(window).width();
-        theCanvas.height = $(window).height();
-    }
-
     jsFrames.registerAnimation(function (thisFrameTimestamp) {
         var position = triangleWave(thisFrameTimestamp - startTime, speed, theCanvas.height - ballRadius * 2) + ballRadius;
 
