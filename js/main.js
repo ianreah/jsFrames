@@ -14,18 +14,18 @@ $(function () {
 
         drawingContext.clearRect(0, 0, theCanvas.width, theCanvas.height);
 
-	    drawingContext.beginPath();
-	    drawingContext.arc(theCanvas.width / 2, position, ballRadius, 0, Math.PI * 2, false);
-	    drawingContext.closePath();
+        drawingContext.beginPath();
+        drawingContext.arc(theCanvas.width / 2, position, ballRadius, 0, Math.PI * 2, false);
+        drawingContext.closePath();
 
-	    drawingContext.fillStyle = "#FF0000";
-	    drawingContext.fill();
-	});
+        drawingContext.fillStyle = "#FF0000";
+        drawingContext.fill();
+    });
 
-	var theFpsDisplay = $('#fps');
-	jsFrames.onFpsUpdate(function (fps) {
-		theFpsDisplay.html("FPS: " + fps);
-	});
-	
-	var startTime = jsFrames.start();
+    var theFpsDisplay = $('#fps');
+    jsFrames.onFpsUpdate(function (fps) {
+        theFpsDisplay.html("FPS: " + fps);
+    });
+
+    var startTime = jsFrames.start();
 });
