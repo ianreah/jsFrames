@@ -1,0 +1,11 @@
+#theCanvas {
+    background: black;
+}
+
+#fps {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 13px;
+    color: white;
+    position: absolute;
+    left: 10px;
+}
