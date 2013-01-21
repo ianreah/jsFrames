@@ -45,7 +45,7 @@ See the [complete JavaScript](js/main.js) for this example.
 
 **Some implementation details:**
 
-The frames are scheduled using the [requestAnimationFrame function](http://creativejs.com/resources/requestanimationframe/) and [a polyfill](https://gist.github.com/1579671) to get round varied support.
+The frames are scheduled using the [requestAnimationFrame function](http://creativejs.com/resources/requestanimationframe/) and [a polyfill](https://gist.github.com/1579671) to get around varied support.
 
 <script type="text/javascript" src="js/jquery-1.8.3.min.js"> </script>
 <script type="text/javascript" src="js/jsFrames.min.js"> </script>
