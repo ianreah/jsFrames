@@ -1,5 +1,6 @@
 ({
-	name: '../jsFrames',
+	baseUrl: '../',
+	name: 'jsFrames',
 	out: 'tmp/compile.tmp',
 	optimize: 'none',
 	
@@ -8,7 +9,7 @@
 	},
 	
 	paths: {
-		'rx.time': '../third-party/rx.time',
-		rx: '../third-party/rx'
+		'rx.time': 'third-party/rx.time',
+		rx: 'third-party/rx'
 	}
 })
