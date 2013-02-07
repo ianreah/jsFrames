@@ -1,40 +1,54 @@
-﻿// requestAnimationFrame polyfill by Erik Möller
-// fixes from Paul Irish and Tino Zijdel
-// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
-(function () {
-    var lastTime = 0;
-    var vendors = ['ms', 'moz', 'webkit', 'o'];
-    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-        window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-        window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame']
-                                   || window[vendors[x] + 'CancelRequestAnimationFrame'];
+﻿(function (root, factory) {
+	// Support for module loaders
+	// TODO: Include support for CommonJS
+    if (typeof define === 'function' && define.amd) {
+		// AMD 
+		define(['rx.time'], function (Rx) {
+			return factory(root, Rx);
+		});
+    } else {
+		// Fallback to browser globals
+		// (using square bracket notation to prevent advanced closure
+		// compilation from renaming it)
+		root['jsFrames'] = factory(root, root.Rx);
     }
+}(this, function(global, Rx, undefined){
 
-    if (!window.requestAnimationFrame)
-        window.requestAnimationFrame = function (callback, element) {
-            var currTime = new Date().getTime();
-            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = window.setTimeout(function () { callback(currTime + timeToCall); },
-              timeToCall);
-            lastTime = currTime + timeToCall;
-            return id;
-        };
+	// requestAnimationFrame polyfill by Erik Möller
+	// fixes from Paul Irish and Tino Zijdel
+	// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+	// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+	(function () {
+		var lastTime = 0;
+		var vendors = ['ms', 'moz', 'webkit', 'o'];
+		for (var x = 0; x < vendors.length && !global.requestAnimationFrame; ++x) {
+			global.requestAnimationFrame = global[vendors[x] + 'RequestAnimationFrame'];
+			global.cancelAnimationFrame = global[vendors[x] + 'CancelAnimationFrame']
+									   || global[vendors[x] + 'CancelRequestAnimationFrame'];
+		}
 
-    if (!window.cancelAnimationFrame)
-        window.cancelAnimationFrame = function (id) {
-            clearTimeout(id);
-        };
-}());
+		if (!global.requestAnimationFrame)
+			global.requestAnimationFrame = function (callback, element) {
+				var currTime = new Date().getTime();
+				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+				var id = global.setTimeout(function () { callback(currTime + timeToCall); },
+				  timeToCall);
+				lastTime = currTime + timeToCall;
+				return id;
+			};
 
-// jsFrames main module
-window['jsFrames'] = (function (rx, jsF) {
+		if (!global.cancelAnimationFrame)
+			global.cancelAnimationFrame = function (id) {
+				clearTimeout(id);
+			};
+	}());
+
 	var animations = [];
 	
 	var filterStrength = 20;
 	var frameTime = 0, lastFrameTimestamp = 0;
 
-	var fpsStream = rx.Observable.interval(1000).select(function () {
+	var fpsStream = Rx.Observable.interval(1000).select(function () {
 	    return (1000 / frameTime).toFixed();
 	}).distinctUntilChanged();
 
@@ -51,20 +65,22 @@ window['jsFrames'] = (function (rx, jsF) {
 		lastFrameTimestamp = timeStamp;
 	}
 
-	jsF['registerAnimation'] = function(animation) {
-		animations.push(animation);
-	};
+	// (Specifying all public properties with strings to prevent advanced closure
+	// compilation from renaming them)
+	return {
+		'registerAnimation': function(animation) {
+			animations.push(animation);
+		},
 
-	jsF['start'] = function () {
-		lastFrameTimestamp = Date.now();
+		'start': function () {
+			lastFrameTimestamp = Date.now();
+			
+			animate(lastFrameTimestamp);
+			return lastFrameTimestamp;
+		},
 		
-		animate(lastFrameTimestamp);
-		return lastFrameTimestamp;
+		'onFpsUpdate': function (action) {
+			fpsStream.subscribe(action);
+		}
 	};
-	
-	jsF['onFpsUpdate'] = function (action) {
-	    fpsStream.subscribe(action);
-	};
-
-	return jsF;
-}(window.Rx, window.jsFrames || {}));
+}));
