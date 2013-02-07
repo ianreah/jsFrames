@@ -1,5 +1,5 @@
 ﻿if (typeof define === 'function' && define.amd) {
-	define ('jsFrames.min', ['jsFrames'], function(lib) {
-		return lib;
-	});
+    define ('jsFrames.min', ['jsFrames'], function(lib) {
+        return lib;
+    });
 }
