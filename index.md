@@ -35,10 +35,10 @@ jsFrames.onFpsUpdate(function (fps) {
 });
 {% endhighlight %}
 
-Start the animation. (`startAnimation` returns a timestamp for the start of the animation.)
+Start the animation.
 
 {% highlight javascript %}
-var startTime = jsFrames.start();
+jsFrames.start();
 {% endhighlight %}
 
 See the [complete JavaScript](js/main.js) for this example.
