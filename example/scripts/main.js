@@ -9,8 +9,10 @@
     var theCanvas = $('#theCanvas')[0];
     var drawingContext = theCanvas.getContext("2d");
 
+    var startTime;
+
     jsFrames.registerAnimation(function (thisFrameTimestamp) {
-        var position = triangleWave(thisFrameTimestamp - startTime, speed, theCanvas.height - ballRadius * 2) + ballRadius;
+        var position = triangleWave(thisFrameTimestamp - (startTime || (startTime = thisFrameTimestamp)), speed, theCanvas.height - ballRadius * 2) + ballRadius;
 
         drawingContext.clearRect(0, 0, theCanvas.width, theCanvas.height);
 
@@ -27,5 +29,5 @@
         theFpsDisplay.html("FPS: " + fps);
     });
 
-    var startTime = jsFrames.start();
+    jsFrames.start();
 });

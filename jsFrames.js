@@ -73,10 +73,7 @@
         },
 
         'start': function () {
-            lastFrameTimestamp = Date.now();
-
-            animate(lastFrameTimestamp);
-            return lastFrameTimestamp;
+            requestAnimationFrame(animate);
         },
 
         'onFpsUpdate': function (action) {
