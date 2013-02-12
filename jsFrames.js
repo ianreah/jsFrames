@@ -63,7 +63,56 @@
         var timeSinceLastFrame = timeStamp - lastFrameTimestamp;
         frameTime += (timeSinceLastFrame - frameTime) / filterStrength;
         lastFrameTimestamp = timeStamp;
-    }
+    };
+
+    var Particle = function (position, velocity, color) {
+        this.gravity = 0.06;
+        this.alpha = 1;
+        this.fade = Math.random() * 0.1;
+	    
+        this.position = {
+            x: position.x || 0,
+            y: position.y || 0
+        };
+
+        this.velocity = {
+            x: velocity.x || 0,
+            y: velocity.y || 0
+        };
+	    
+        this.color = color;
+
+        this.lastPosition = {
+            x: this.position.x,
+            y: this.position.y
+        };
+    };
+
+	Particle.prototype['update'] = function() {
+		this.lastPosition.x = this.position.x;
+		this.lastPosition.y = this.position.y;
+
+		this.velocity.y += this.gravity;
+		this.position.x += this.velocity.x;
+		this.position.y += this.velocity.y;
+		this.alpha -= this.fade;
+
+		return (this.alpha < 0.005);
+	};
+
+	Particle.prototype['render'] = function(context) {
+		context.save();
+
+		context.globalAlpha = this.alpha;
+		context.strokeStyle = this.color;
+
+		context.beginPath();
+		context.moveTo(this.lastPosition.x, this.lastPosition.y);
+		context.lineTo(this.position.x, this.position.y);
+		context.stroke();
+
+		context.restore();
+	};
 
     // (Specifying all public properties with strings to prevent advanced closure
     // compilation from renaming them)
@@ -78,6 +127,8 @@
 
         'onFpsUpdate': function (action) {
             fpsStream.subscribe(action);
-        }
+        },
+
+        'Particle': Particle
     };
 }));
