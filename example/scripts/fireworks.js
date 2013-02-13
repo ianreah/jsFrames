@@ -1,8 +1,5 @@
 ﻿$(function () {
     var createParticle = function(position, velocity, color, exploded) {
-        position = position || {};
-        velocity = velocity || {};
-
         var particle = new jsFrames.Particle(position, velocity, color);
         particle.postUpdate = function() {
             if (particle.alpha < 0.005) {
