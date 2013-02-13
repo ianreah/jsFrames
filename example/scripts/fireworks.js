@@ -1,26 +1,39 @@
 ﻿$(function () {
     var particles = [];
 
-	var createParticle = function(position, velocity, color, exploded) {
-		position = position || {};
-		velocity = velocity || {};
-		
-		var particle = new jsFrames.Particle(position, velocity, color);
-		particle.exploded = exploded;
-		
-		particles.push(particle);
-	};
+    var createParticle = function(position, velocity, color, exploded) {
+        position = position || {};
+        velocity = velocity || {};
+
+        var particle = new jsFrames.Particle(position, velocity, color);
+        particle.exploded = exploded;
+
+        particles.push(particle);
+    };
 
     var theCanvas = $('#theCanvas')[0];
     var drawingContext = theCanvas.getContext("2d");
 
-    // TODO: touch event also
-    $('#theCanvas').mouseup(function () {
-    	createParticle(
-    		{ x: theCanvas.width * 0.5, y: theCanvas.height + 10 }, // firework start position
-            { x: Math.random() * 3 - 1.5, y: Math.random() * 5 - 10 }, // velocity
-            "hsl(" + Math.random()*255 + ",100%,60%)"); // color
-    });
+    Rx.Observable.generateWithRelativeTime(
+        0,
+        function (x) {
+            return true;
+        },
+        function (x) {
+            return x;
+        },
+        function (x) {
+            return x;
+        },
+        function (x) {
+            return Math.random() * 3000;
+        })
+        .subscribe(function (x) {
+            createParticle(
+                { x: theCanvas.width * 0.5, y: theCanvas.height + 10 }, // firework start position
+                { x: Math.random() * 3 - 1.5, y: -10 }, // velocity
+                "hsl(" + Math.random() * 255 + ",100%,60%)"); // color
+        });
 
     jsFrames.registerAnimation(function () {
         drawingContext.fillStyle = "rgba(0,0,0,0.2)";
