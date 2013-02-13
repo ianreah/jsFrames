@@ -1,14 +1,35 @@
 ﻿$(function () {
-    var particles = [];
-
     var createParticle = function(position, velocity, color, exploded) {
         position = position || {};
         velocity = velocity || {};
 
         var particle = new jsFrames.Particle(position, velocity, color);
-        particle.exploded = exploded;
+        particle.postUpdate = function() {
+            if (particle.alpha < 0.005) {
+                jsFrames.removeParticle(particle);
 
-        particles.push(particle);
+                if (!exploded) {
+                    var count = 100;
+                    var angle = (Math.PI * 2) / count;
+                    while (count--) {
+                        
+                        var randomVelocity = 4 + Math.random() * 4;
+                        var particleAngle = count * angle;
+
+                        createParticle(
+                          particle.position,
+                          {
+                              x: Math.cos(particleAngle) * randomVelocity,
+                              y: Math.sin(particleAngle) * randomVelocity
+                          },
+                          particle.color,
+                          true);
+                    }
+                }
+            }
+        };
+
+        jsFrames.addParticle(particle);
     };
 
     var theCanvas = $('#theCanvas')[0];
@@ -39,35 +60,7 @@
         drawingContext.fillStyle = "rgba(0,0,0,0.2)";
         drawingContext.fillRect(0, 0, theCanvas.width, theCanvas.height);
 
-        var index = particles.length;
-        while (index--) {
-            var particle = particles[index];
-
-            if (particle.update()) {
-                particles.splice(index, 1);
-
-                if (!particle.exploded) {
-                    var count = 100;
-                    var angle = (Math.PI * 2) / count;
-                    while (count--) {
-
-                        var randomVelocity = 4 + Math.random() * 4;
-                        var particleAngle = count * angle;
-
-                        createParticle(
-                          particle.position,
-                          {
-                              x: Math.cos(particleAngle) * randomVelocity,
-                              y: Math.sin(particleAngle) * randomVelocity
-                          },
-                          particle.color,
-                          true);
-                    }
-                }
-            }
-
-            particle.render(drawingContext);
-        }
+        jsFrames.renderParticles(drawingContext);
     });
 
     var theFpsDisplay = $('#fps');

@@ -44,6 +44,7 @@
     }());
 
     var animations = [];
+    var particles = [];
 
     var filterStrength = 20;
     var frameTime = 0, lastFrameTimestamp = 0;
@@ -69,7 +70,7 @@
         this.gravity = 0.06;
         this.alpha = 1;
         this.fade = Math.random() * 0.1;
-	    
+
         this.position = {
             x: position.x || 0,
             y: position.y || 0
@@ -79,7 +80,7 @@
             x: velocity.x || 0,
             y: velocity.y || 0
         };
-	    
+
         this.color = color;
 
         this.lastPosition = {
@@ -88,31 +89,31 @@
         };
     };
 
-	Particle.prototype['update'] = function() {
-		this.lastPosition.x = this.position.x;
-		this.lastPosition.y = this.position.y;
+    Particle.prototype['update'] = function() {
+        this.lastPosition.x = this.position.x;
+        this.lastPosition.y = this.position.y;
 
-		this.velocity.y += this.gravity;
-		this.position.x += this.velocity.x;
-		this.position.y += this.velocity.y;
-		this.alpha -= this.fade;
+        this.velocity.y += this.gravity;
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
+        this.alpha -= this.fade;
+    };
 
-		return (this.alpha < 0.005);
-	};
+    Particle.prototype['postUpdate'] = function () { };
+    
+    Particle.prototype['render'] = function (context) {
+        context.save();
 
-	Particle.prototype['render'] = function(context) {
-		context.save();
+        context.globalAlpha = this.alpha;
+        context.strokeStyle = this.color;
 
-		context.globalAlpha = this.alpha;
-		context.strokeStyle = this.color;
+        context.beginPath();
+        context.moveTo(this.lastPosition.x, this.lastPosition.y);
+        context.lineTo(this.position.x, this.position.y);
+        context.stroke();
 
-		context.beginPath();
-		context.moveTo(this.lastPosition.x, this.lastPosition.y);
-		context.lineTo(this.position.x, this.position.y);
-		context.stroke();
-
-		context.restore();
-	};
+        context.restore();
+    };
 
     // (Specifying all public properties with strings to prevent advanced closure
     // compilation from renaming them)
@@ -129,6 +130,26 @@
             fpsStream.subscribe(action);
         },
 
-        'Particle': Particle
+        'Particle': Particle,
+        
+        'addParticle': function (particle) {
+            particles.push(particle);
+        },
+        
+        'removeParticle': function (particle) {
+            particles.splice(particles.indexOf(particle), 1);
+        },
+        
+        'renderParticles': function (drawingContext) {
+            var index = particles.length;
+            while (index--) {
+                var particle = particles[index];
+
+                particle['update']();
+                particle['postUpdate']();
+
+                particle['render'](drawingContext);
+            }
+        }
     };
 }));
