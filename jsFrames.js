@@ -10,7 +10,7 @@
         // Fallback to browser globals
         // (using square bracket notation to prevent advanced closure
         // compilation from renaming it)
-        root['jsFrames'] = factory(root, root.Rx);
+        root.jsFrames = factory(root, root.Rx);
     }
 }(this, function(global, Rx, undefined){
 
@@ -89,7 +89,7 @@
         };
     };
 
-    Particle.prototype['update'] = function() {
+    Particle.prototype.update = function() {
         this.lastPosition.x = this.position.x;
         this.lastPosition.y = this.position.y;
 
@@ -99,9 +99,9 @@
         this.alpha -= this.fade;
     };
 
-    Particle.prototype['postUpdate'] = function () { };
+    Particle.prototype.postUpdate = function () { };
     
-    Particle.prototype['render'] = function (context) {
+    Particle.prototype.render = function (context) {
         context.save();
 
         context.globalAlpha = this.alpha;
@@ -118,37 +118,37 @@
     // (Specifying all public properties with strings to prevent advanced closure
     // compilation from renaming them)
     return {
-        'registerAnimation': function(animation) {
+        registerAnimation: function(animation) {
             animations.push(animation);
         },
 
-        'start': function () {
+        start: function () {
             requestAnimationFrame(animate);
         },
 
-        'onFpsUpdate': function (action) {
+        onFpsUpdate: function (action) {
             fpsStream.subscribe(action);
         },
 
-        'Particle': Particle,
+        Particle: Particle,
         
-        'addParticle': function (particle) {
+        addParticle: function (particle) {
             particles.push(particle);
         },
         
-        'removeParticle': function (particle) {
+        removeParticle: function (particle) {
             particles.splice(particles.indexOf(particle), 1);
         },
         
-        'renderParticles': function (drawingContext) {
+        renderParticles: function (drawingContext) {
             var index = particles.length;
             while (index--) {
                 var particle = particles[index];
 
-                particle['update']();
-                particle['postUpdate']();
+                particle.update();
+                particle.postUpdate();
 
-                particle['render'](drawingContext);
+                particle.render(drawingContext);
             }
         }
     };
