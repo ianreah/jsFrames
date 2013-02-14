@@ -43,10 +43,15 @@ jsFrames.start();
 
 See the [complete JavaScript](js/main.js) for this example.
 
+There is also experimental support for particles with some very basic physics. See [fireworks.js](js/fireworks.js) for the code used to create this example...
+
+<canvas id="fireworks" width="800" height="400"> </canvas>
+
 **Some implementation details:**
 
 The frames are scheduled using the [requestAnimationFrame function](http://creativejs.com/resources/requestanimationframe/) and [a polyfill](https://gist.github.com/1579671) to get around varied support.
 
 <script type="text/javascript" src="js/jquery-1.8.3.min.js"> </script>
 <script type="text/javascript" src="js/jsFrames.min.js"> </script>
+<script type="text/javascript" src="js/fireworks.js"> </script>
 <script type="text/javascript" src="js/main.js"> </script>
