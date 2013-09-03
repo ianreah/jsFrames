@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: project
 title: jsFrames
 project_url: https://github.com/ianreah/jsFrames
 styles:
