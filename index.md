@@ -12,9 +12,10 @@ A JavaScript library for creating frame-based animations.
 
 **Example usage:**
 
-<span id="fps"> </span>
-
-<canvas id="theCanvas"> </canvas>
+<div id="example-container">
+	<span id="fps"> </span>
+	<canvas id="theCanvas"> </canvas>
+</div>
 
 Register any functions to be called on each frame. The functions accept a single parameter for the timestamp of the current frame.
 

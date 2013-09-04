@@ -1,3 +1,7 @@
+#example-container {
+    position: relative;
+}
+
 #theCanvas {
     background: black;
 }
@@ -7,5 +11,5 @@
     font-size: 13px;
     color: white;
     position: absolute;
-    left: 25px;
+    left: 5px;
 }
